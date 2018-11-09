@@ -4,6 +4,12 @@ import {
     NavbarBrand,
     NavbarBurger,
     NavbarItem,
+    NavbarEnd,
+    Image,
+    Field,
+    Control,
+    Icon,
+    Input
 } from 'bloomer'
 import styled from 'styled-components'
 import logo from '../assets/logos/logo-sm.png'
@@ -15,14 +21,41 @@ const StyledNavbar = styled(Navbar)`
     width: 100%;
     background-color: transparent;
 `
-const StyledImage = styled.img`
-    width: 130px;
-    height: auto;
-    max-height: 3.75rem !important;
-    margin-left: 1rem;
-    @media screen and (max-width: 599px) {
-        width: 80px;
+const HeaderImage = styled(Image)`
+    height: 80px;
+    width: 150px;
+    @media screen and (min-width: 769px) {
+        margin-left: 1rem;
     }
+    @media screen and (max-width: 768px) {
+        height: 70px;
+        width: 130px;
+    }
+    @media screen and (max-width: 599px) {
+        height: 60px;
+        width: 112.5px;
+    }
+    @media screen and (max-width: 320px) {
+        height: 35px;
+        width: 65px;
+    }
+`
+const StyledNavbarBurger = styled(NavbarBurger)`
+    :hover {
+        background-color: #fff;
+    }
+    height: 4.25rem;
+    width: 4.25rem;
+    @media screen and (max-width: 321px) {
+        height: 3.25rem;
+        width: 3.25rem;
+    }
+`
+const HeaderControl = styled(Control)`
+    span.icon {
+        color: ${props => props.theme.success}!important;
+    }
+}
 `
 
 export default class Header extends PureComponent {
@@ -45,10 +78,36 @@ export default class Header extends PureComponent {
             <StyledNavbar>
                 <NavbarBrand>
                     <NavbarItem>
-                        <StyledImage src={logo}/>
+                        <HeaderImage src={logo}/>
                     </NavbarItem>
-                    <NavbarBurger isActive={this.state.isActive} onClick={this.onClickNav}/>
+                    <NavbarItem isHidden="desktop">
+                        <Field>
+                            <HeaderControl hasIcons="left">
+                                <Input
+                                    placeholder="поиск по сайту"
+                                    type="text"
+                                    isColor="success"
+                                    isSize="small"/>
+                                <Icon isSize='small' isAlign='left' className="fas fa-search"></Icon>
+                            </HeaderControl>
+                        </Field>
+                    </NavbarItem>
+                    <StyledNavbarBurger isActive={this.state.isActive} onClick={this.onClickNav}/>
                 </NavbarBrand>
+                <NavbarEnd>
+                    <NavbarItem isHidden="touch">
+                        <Field>
+                            <HeaderControl hasIcons="left">
+                                <Input
+                                    placeholder="поиск по сайту"
+                                    type="text"
+                                    isColor="success"
+                                    isSize="medium"/>
+                                <Icon isSize='medium' isAlign='left' className="fas fa-search"></Icon>
+                            </HeaderControl>
+                        </Field>
+                    </NavbarItem>
+                </NavbarEnd>
             </StyledNavbar>
         )
     }

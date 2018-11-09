@@ -80,6 +80,10 @@ $colors: (
 // Navbar
 $navbar-item-hover-background-color: $success-shadow;
 $navbar-box-shadow-color: $success;
+$navbar-item-img-max-height: 5.25rem;
+$navbar-item-color: $primary;
+$navbar-item-hover-color: $success;
+$navbar-item-active-color: $success;
 // Links
 $link: $primary;
 $link-invert: $primary-invert;
