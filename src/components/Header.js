@@ -13,7 +13,10 @@ import {
 } from 'bloomer'
 import styled from 'styled-components'
 import logo from '../assets/logos/logo-sm.png'
-import MediaQuery from 'react-responsive';
+import Responsive from 'react-responsive';
+
+const Desktop = props => <Responsive {...props} minWidth={736}/>;
+const Touch = props => <Responsive {...props} maxWidth={735}/>;
 
 const StyledNavbar = styled(Navbar)`
     position: fixed;
@@ -89,81 +92,50 @@ export default class Header extends PureComponent {
                     <StyledNavbarItem isHidden="desktop">
                         <Field>
                             <HeaderControl hasIcons="left">
-                                <MediaQuery minDeviceWidth={736}>
-                                    {(matches) => {
-                                        if (matches) {
-                                            return (
-                                                <Fragment>
-                                                    <Input
-                                                        placeholder="поиск по сайту"
-                                                        type="text"
-                                                        isColor="success"
-                                                        isSize="large"/>
-                                                    <Icon isSize='large' isAlign='left' className="fas fa-search"></Icon>
-                                                </Fragment>
-                                            )
-                                        } else {
-                                            return (
-                                                <Fragment>
-                                                    <Input
-                                                        placeholder="поиск по сайту"
-                                                        type="text"
-                                                        isColor="success"
-                                                        isSize="small"/>
-                                                    <Icon isSize='small' isAlign='left' className="fas fa-search"></Icon>
-                                                </Fragment>
-                                            )
-                                        }
-                                    }}
-                                </MediaQuery>
+                                <Desktop>
+                                    <Input
+                                        placeholder="поиск по сайту"
+                                        type="text"
+                                        isColor="success"
+                                        isSize="large"/>
+                                    <Icon isSize='large' isAlign='left' className="fas fa-search"></Icon>
+                                </Desktop>
+                                <Touch>
+                                    <Input
+                                        placeholder="поиск по сайту"
+                                        type="text"
+                                        isColor="success"
+                                        isSize="small"/>
+                                    <Icon isSize='small' isAlign='left' className="fas fa-search"></Icon>
+                                </Touch>
                             </HeaderControl>
                         </Field>
                     </StyledNavbarItem>
                     <StyledNavbarItem isHidden="desktop">
-                        {!this.state.isActive && <MediaQuery minDeviceWidth={736}>
-                            {(matches) => {
-                                if (matches) {
-                                    return (
-                                        <Fragment>
-                                            <Button isSize="large" onClick={this.onClickNav}>
-                                                <Icon className="fas fa-bars"></Icon>
-                                            </Button>
-                                        </Fragment>
-                                    )
-                                } else {
-                                    return (
-                                        <Fragment>
-                                            <Button isSize="small" onClick={this.onClickNav}>
-                                                <Icon className="fas fa-bars"></Icon>
-                                            </Button>
-                                        </Fragment>
-                                    )
-                                }
-                            }}
-                        </MediaQuery>
-}
-                        {this.state.isActive && <MediaQuery minDeviceWidth={736}>
-                            {(matches) => {
-                                if (matches) {
-                                    return (
-                                        <Fragment>
-                                            <Button isSize="large" onClick={this.onClickNav}>
-                                                <Icon className="fas fa-times"></Icon>
-                                            </Button>
-                                        </Fragment>
-                                    )
-                                } else {
-                                    return (
-                                        <Fragment>
-                                            <Button isSize="small" onClick={this.onClickNav}>
-                                                <Icon className="fas fa-times"></Icon>
-                                            </Button>
-                                        </Fragment>
-                                    )
-                                }
-                            }}
-                        </MediaQuery>
-}
+                        {!this.state.isActive && <Fragment>
+                            <Desktop>
+                                <Button isSize="large" onClick={this.onClickNav}>
+                                    <Icon className="fas fa-bars"></Icon>
+                                </Button>
+                            </Desktop>
+                            <Touch>
+                                <Button isSize="small" onClick={this.onClickNav}>
+                                    <Icon className="fas fa-bars"></Icon>
+                                </Button>
+                            </Touch>
+                        </Fragment>}
+                        {this.state.isActive && <Fragment>
+                            <Desktop>
+                                <Button isSize="large" onClick={this.onClickNav}>
+                                    <Icon className="fas fa-times"></Icon>
+                                </Button>
+                            </Desktop>
+                            < Touch >
+                                <Button isSize="small" onClick={this.onClickNav}>
+                                    <Icon className="fas fa-times"></Icon>
+                                </Button>
+                            </Touch>
+                        </Fragment>}
                     </StyledNavbarItem>
                 </NavbarBrand>
                 <NavbarEnd>
