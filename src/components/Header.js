@@ -23,7 +23,7 @@ const StyledNavbar = styled(Navbar)`
     top: 0;
     right: 0;
     width: 100%;
-    background-color: transparent;
+    background-color: rgba(255,255,255,.5);
 `
 const HeaderImage = styled(Image)`
     height: 80px;

@@ -42,17 +42,9 @@
 $family-sans-serif: apple-system, BlinkMacSystemFont, "Raleway", "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-$family-primary: apple-system, BlinkMacSystemFont, "Raleway", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-$content-heading-color: $info;
-$card-header-color: $info;
-$card-background-color: $success-shadow;
-$card-color: $info;
-$dropdown-item-color: $info;
-$dropdown-item-hover-color: #fff;
-$dropdown-item-hover-background-color: $primary-shadow;
-$dropdown-divider-background-color: $info-shadow;
-$label-weight: 600;
-$button-color: $primary;
+$family-primary: apple-system, BlinkMacSystemFont, "Raleway", "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
 
 // override colors
 $colors: (
@@ -77,6 +69,23 @@ $colors: (
         $danger-invert
     )
 );
+$content-heading-color: $info;
+$border: $success-shadow;
+$border-hover: $success;
+// Card
+$card-header-color: $primary;
+$card-color: $info;
+$card-header-background-color: $success-shadow;
+$card-shadow: 0 2px 3px $success-shadow, 0 0 0 1px $success-shadow;
+$card-header-shadow: 0 1px 2px $success-shadow;
+$card-footer-background-color: $success-shadow;
+// Dropdown
+$dropdown-item-color: $info;
+$dropdown-item-hover-color: #fff;
+$dropdown-item-hover-background-color: $primary-shadow;
+$dropdown-divider-background-color: $info-shadow;
+$label-weight: 600;
+$button-color: $primary;
 // Navbar
 $navbar-item-hover-background-color: $success-shadow;
 $navbar-box-shadow-color: $success;

@@ -1,7 +1,10 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
-import Home from "./home/Home";
+import {Switch} from "react-router-dom";
+import AppliedRoute from './components/AppliedRoute'
+import AsyncComponent from './components/AsyncComponent'
 
-export default() => <Switch>
-    <Route path="/" exact component={Home}/>
+const AsyncHome = AsyncComponent(() => import ('./views/Home'))
+
+export default({childProps}) => <Switch>
+    <AppliedRoute path="/" exact component={AsyncHome} props={childProps}/>
 </Switch>;

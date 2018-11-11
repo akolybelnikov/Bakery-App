@@ -1,8 +1,14 @@
 import React, {Component} from 'react'
 import Routes from "./Routes";
+import {compose, withApollo} from 'react-apollo'
+
 import {Container} from 'bloomer'
 import Header from './components/Header'
 import {ThemeProvider} from 'styled-components'
+import styled from 'styled-components'
+import {media} from './styles/style-utils'
+
+import * as Resolver from './GraphQL/Resolvers/index'
 
 const theme = {
   primary: '#52082d',
@@ -13,17 +19,34 @@ const theme = {
   successShadow: 'rgba(234, 204, 178, 0.3)'
 }
 
+const RootContainer = styled(Container)`
+  ${media.default `padding-top: 6rem;`};
+  ${media.touch `padding-top: 4.25rem;`};
+  color: ${props => props.theme.info}!important;
+`
+
 class App extends Component {
+
+  state = {
+    busy: false
+  }
+
   render() {
+    const childProps = {
+      offers: this.props.offers,
+      categories: this.props.categories,
+      news: this.props.news,
+      products: this.props.products
+    }
     return (
       <ThemeProvider theme={theme}>
-        <Container isFluid>
+        <RootContainer isFluid>
           <Header/>
-          <Routes/>
-        </Container>
+          <Routes childProps={childProps}/>
+        </RootContainer>
       </ThemeProvider>
     );
   }
 }
 
-export default App
+export default withApollo(compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews, Resolver.listProducts)(App))
