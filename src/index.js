@@ -26,7 +26,8 @@ const client = new Client({
     auth: {
         type: process.env.REACT_APP_AWS_APPSYN_AUTHENTICATIONTYPE,
         apiKey: process.env.REACT_APP_AWS_APPSYNC_APIKEY
-    }
+    },
+    disableOffline: true
 })
 
 const AppWithApollo = () => (
