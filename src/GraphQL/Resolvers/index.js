@@ -6,7 +6,7 @@ import QueryAllProducts from '../Queries/QueryAllProducts'
 
 export const listOffers = graphql(QueryAllOffers, {
     options: {
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'network-only'
     },
     props: ({
         data: {

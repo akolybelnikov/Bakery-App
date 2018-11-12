@@ -2,14 +2,13 @@ import React from "react";
 import {Columns, Column, Section} from 'bloomer'
 
 import styled from 'styled-components';
-import {media} from '../styles/style-utils'
 
 import Offers from '../components/Offers'
 import Categories from '../components/Categories'
 import News from '../components/News'
 
 const StyledSection = styled(Section)`
-    ${media.touch `padding: 1rem;`};
+    padding: 1rem;
 `
 
 const Home = props => {

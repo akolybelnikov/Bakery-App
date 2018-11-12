@@ -49,4 +49,4 @@ class App extends Component {
   }
 }
 
-export default withApollo(compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews, Resolver.listProducts)(App))
+export default compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews, Resolver.listProducts)(App)
