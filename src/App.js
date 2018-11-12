@@ -48,4 +48,4 @@ class App extends Component {
   }
 }
 
-export default compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews)(App)
+export default compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews, Resolver.listProducts)(App)
