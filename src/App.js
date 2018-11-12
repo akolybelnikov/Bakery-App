@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Routes from "./Routes";
-import {compose, withApollo} from 'react-apollo'
+import {compose} from 'react-apollo'
 
 import {Container} from 'bloomer'
 import Header from './components/Header'
@@ -35,8 +35,7 @@ class App extends Component {
     const childProps = {
       offers: this.props.offers,
       categories: this.props.categories,
-      news: this.props.news,
-      products: this.props.products
+      news: this.props.news
     }
     return (
       <ThemeProvider theme={theme}>
@@ -49,4 +48,4 @@ class App extends Component {
   }
 }
 
-export default withApollo(compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews, Resolver.listProducts)(App))
+export default compose(Resolver.listOffers, Resolver.listCategories, Resolver.listNews)(App)

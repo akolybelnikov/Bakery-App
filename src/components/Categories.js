@@ -20,7 +20,7 @@ const Categories = props => {
                     <StyledTitle>Наш Ассортимент</StyledTitle>
                 </CardHeader>
                 <CardContent>
-                    <Columns isCentered isVCentered>
+                    <Columns isCentered>
                         {props.categories && props
                             .categories
                             .map(category => (

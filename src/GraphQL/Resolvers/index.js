@@ -5,9 +5,6 @@ import QueryAllNews from '../Queries/QueryAllNews'
 import QueryAllProducts from '../Queries/QueryAllProducts'
 
 export const listOffers = graphql(QueryAllOffers, {
-    options: {
-        fetchPolicy: 'cache-and-network'
-    },
     props: ({
         data: {
             listOffers = {
@@ -19,9 +16,6 @@ export const listOffers = graphql(QueryAllOffers, {
 })
 
 export const listCategories = graphql(QueryAllCategories, {
-    options: {
-        fetchPolicy: 'cache-and-network'
-    },
     props: ({
         data: {
             listCategories = {
@@ -33,9 +27,6 @@ export const listCategories = graphql(QueryAllCategories, {
 })
 
 export const listNews = graphql(QueryAllNews, {
-    options: {
-        fetchPolicy: 'cache-and-network'
-    },
     props: ({
         data: {
             listNews = {
@@ -47,9 +38,6 @@ export const listNews = graphql(QueryAllNews, {
 })
 
 export const listProducts = graphql(QueryAllProducts, {
-    options: {
-        fetchPolicy: 'cache-and-network'
-    },
     props: ({
         data: {
             listProducts = {
