@@ -6,8 +6,7 @@ import QueryAllProducts from '../Queries/QueryAllProducts'
 
 export const listOffers = graphql(QueryAllOffers, {
     options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'np-cache'
+        errorPolicy: 'all'
     },
     props: ({
         data: {
@@ -21,8 +20,7 @@ export const listOffers = graphql(QueryAllOffers, {
 
 export const listCategories = graphql(QueryAllCategories, {
     options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'np-cache'
+        errorPolicy: 'all'
     },
     props: ({
         data: {
@@ -36,8 +34,7 @@ export const listCategories = graphql(QueryAllCategories, {
 
 export const listNews = graphql(QueryAllNews, {
     options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'np-cache'
+        errorPolicy: 'all'
     },
     props: ({
         data: {
@@ -51,8 +48,7 @@ export const listNews = graphql(QueryAllNews, {
 
 export const listProducts = graphql(QueryAllProducts, {
     options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'np-cache'
+        errorPolicy: 'all'
     },
     props: ({
         data: {
