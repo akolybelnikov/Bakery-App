@@ -6,7 +6,7 @@ import {Container} from 'bloomer'
 import Header from './components/Header'
 import {ThemeProvider} from 'styled-components'
 import styled from 'styled-components'
-import {media} from './styles/style-utils'
+import {maxMedia, minMedia} from './styles/style-utils'
 
 import * as Resolver from './GraphQL/Resolvers/index'
 
@@ -20,8 +20,8 @@ const theme = {
 }
 
 const RootContainer = styled(Container)`
-  ${media.default `padding-top: 6rem;`};
-  ${media.touch `padding-top: 4.25rem;`};
+  ${minMedia.touch `padding-top: 6rem;`};
+  ${maxMedia.touch `padding-top: 2.25rem;`};
   color: ${props => props.theme.info}!important;
 `
 
