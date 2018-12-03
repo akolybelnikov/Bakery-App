@@ -2,12 +2,11 @@ import graphql from 'graphql-tag'
 
 export default graphql(`
 query {
-    listOffers (filter: {status: {eq: "active"}}) {
+    listFillings {
         items {
-            id
-            content
+            name
             image
-            status
+            label
         }
     }
 }

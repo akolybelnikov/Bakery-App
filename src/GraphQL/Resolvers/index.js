@@ -1,8 +1,9 @@
-import {graphql} from 'react-apollo'
+import { graphql } from 'react-apollo'
 import QueryAllOffers from '../Queries/QueryAllOffers'
 import QueryAllCategories from '../Queries/QueryAllCategories'
 import QueryAllNews from '../Queries/QueryAllNews'
 import QueryAllProducts from '../Queries/QueryAllProducts'
+import QueryAllFillings from '../Queries/QueryAllFillings'
 
 export const listOffers = graphql(QueryAllOffers, {
     options: {
@@ -15,7 +16,7 @@ export const listOffers = graphql(QueryAllOffers, {
                 items: []
             }
         }
-    }) => ({offers: listOffers.items})
+    }) => ({ offers: listOffers.items })
 
 })
 
@@ -30,7 +31,7 @@ export const listCategories = graphql(QueryAllCategories, {
                 items: []
             }
         }
-    }) => ({categories: listCategories.items})
+    }) => ({ categories: listCategories.items })
 
 })
 
@@ -45,7 +46,7 @@ export const listNews = graphql(QueryAllNews, {
                 items: []
             }
         }
-    }) => ({news: listNews.items})
+    }) => ({ news: listNews.items })
 
 })
 
@@ -60,6 +61,21 @@ export const listProducts = graphql(QueryAllProducts, {
                 items: []
             }
         }
-    }) => ({products: listProducts.items})
+    }) => ({ products: listProducts.items })
+
+})
+
+export const listFillings = graphql(QueryAllFillings, {
+    options: {
+        errorPolicy: 'all',
+        fetchPolicy: 'cache-and-network'
+    },
+    props: ({
+        data: {
+            listFillings = {
+                items: []
+            }
+        }
+    }) => ({ fillings: listFillings.items })
 
 })

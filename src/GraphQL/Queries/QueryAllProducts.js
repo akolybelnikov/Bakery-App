@@ -6,7 +6,6 @@ query {
         items {
             productId
             category
-            attachment
             image
             weight
             price
