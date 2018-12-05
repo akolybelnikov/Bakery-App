@@ -1,22 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import './styles/index.scss';
 import './styles/_bulma.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import {Rehydrated} from 'aws-appsync-react'
-import {ApolloProvider} from 'react-apollo'
+import { Rehydrated } from 'aws-appsync-react'
+import { ApolloProvider } from 'react-apollo'
 import Client from 'aws-appsync'
-import Amplify from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
+
+// window.LOG_LEVEL='DEBUG'
 
 Amplify.configure({
-    API: {
-        aws_appsync_graphqlEndpoint: process.env.REACT_APP_AWS_APPSYNC_GRAPHQLENDPOINT,
-        aws_appsync_region: process.env.REACT_APP_AWS_APPSYNC_REGION,
-        aws_appsync_authenticationType: process.env.REACT_APP_AWS_APPSYN_AUTHENTICATIONTYPE,
-        aws_appsync_apiKey: process.env.REACT_APP_AWS_APPSYNC_APIKEY
+    Auth: {
+        identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID,
+        region: process.env.REACT_APP_AWS_APPSYNC_REGION,
+        userPoolId: process.env.REACT_APP_AWS_USER_POOL_ID,
+        userPoolWebClientId: process.env.REACT_APP_AWS_WEBCLIENT_ID,
+        mandatorySignIn: false
     }
 });
 
@@ -25,7 +28,7 @@ const client = new Client({
     region: process.env.REACT_APP_AWS_APPSYNC_REGION,
     auth: {
         type: process.env.REACT_APP_AWS_APPSYN_AUTHENTICATIONTYPE,
-        apiKey: process.env.REACT_APP_AWS_APPSYNC_APIKEY
+        credentials: () => Auth.currentCredentials()
     },
     disableOffline: true
 })
@@ -33,12 +36,12 @@ const client = new Client({
 const AppWithApollo = () => (
     <ApolloProvider client={client}>
         <Rehydrated>
-            <App/>
+            <App />
         </Rehydrated>
     </ApolloProvider>
 )
 
 ReactDOM.render(
-    <Router><AppWithApollo/></Router>, document.getElementById('root'));
+    <Router><AppWithApollo /></Router>, document.getElementById('root'));
 
 serviceWorker.unregister();
