@@ -11,7 +11,7 @@ import { ApolloProvider } from 'react-apollo'
 import Client from 'aws-appsync'
 import Amplify, { Auth } from "aws-amplify";
 
-// window.LOG_LEVEL='DEBUG'
+window.LOG_LEVEL='DEBUG'
 
 Amplify.configure({
     Auth: {
@@ -27,7 +27,7 @@ const client = new Client({
     url: process.env.REACT_APP_AWS_APPSYNC_GRAPHQLENDPOINT,
     region: process.env.REACT_APP_AWS_APPSYNC_REGION,
     auth: {
-        type: process.env.REACT_APP_AWS_APPSYN_AUTHENTICATIONTYPE,
+        type: process.env.REACT_APP_AWS_APPSYNC_AUTHENTICATIONTYPE,
         credentials: () => Auth.currentCredentials()
     },
     disableOffline: true
