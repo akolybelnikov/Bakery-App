@@ -11,7 +11,7 @@ import { ApolloProvider } from 'react-apollo'
 import Client from 'aws-appsync'
 import Amplify, { Auth } from "aws-amplify";
 
-// window.LOG_LEVEL='DEBUG'
+window.LOG_LEVEL='DEBUG'
 
 Amplify.configure({
     Auth: {
