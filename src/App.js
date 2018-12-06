@@ -10,6 +10,8 @@ import { maxMedia, minMedia } from './styles/style-utils'
 
 import * as Resolver from './GraphQL/Resolvers/index'
 
+import Login from './components/Login'
+
 const theme = {
   primary: '#52082d',
   info: '#331507',
@@ -28,7 +30,8 @@ const RootContainer = styled(Container)`
 class App extends Component {
 
   state = {
-    busy: false
+    busy: false,
+    isAuthenticated: false
   }
 
   render() {
@@ -37,12 +40,15 @@ class App extends Component {
       categories: this.props.categories,
       news: this.props.news,
       products: this.props.products,
-      fillings: this.props.fillings
+      fillings: this.props.fillings,
+      isAuthenticated: this.state.isAuthenticated,
+      userHasAuthenticated: this.userHasAuthenticated
     }
     return (
       <ThemeProvider theme={theme}>
         <RootContainer isFluid>
           <Header />
+          <Login />
           <Routes childProps={childProps} />
         </RootContainer>
       </ThemeProvider>
