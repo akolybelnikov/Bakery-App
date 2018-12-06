@@ -1,22 +1,22 @@
-import React, {PureComponent, Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react'
 import {
     Navbar,
     NavbarBrand,
     NavbarItem,
     NavbarEnd,
     Image,
-    Field,
+    NavbarBurger,
     Control,
     Icon,
-    Input,
     Button
 } from 'bloomer'
 import styled from 'styled-components'
-import logo from '../assets/logos/logo-sm.png'
-import Responsive from 'react-responsive';
+import logo from '../assets/logos/logo.png'
+import Responsive from 'react-responsive'
+import Burger from './SVG/Burger'
 
-const Desktop = props => <Responsive {...props} minWidth={736}/>;
-const Touch = props => <Responsive {...props} maxWidth={735}/>;
+const Desktop = props => <Responsive {...props} minWidth={736}/>
+const Touch = props => <Responsive {...props} maxWidth={735}/>
 
 const StyledNavbar = styled(Navbar)`
     position: fixed;
@@ -49,6 +49,13 @@ const HeaderImage = styled(Image)`
         width: 65px;
     }
 `
+const HeaderControl = styled(Control)`
+    span.icon {
+        color: ${props => props.theme.success}!important;
+        transition: all 1s ease-in-out;
+    }
+}
+`
 const StyledNavbarItem = styled(NavbarItem)`
     flex-grow: 1;
     justify-content: flex-end;
@@ -59,12 +66,9 @@ const StyledNavbarItem = styled(NavbarItem)`
         padding: 0.5rem;
     }
 `
-const HeaderControl = styled(Control)`
-    span.icon {
-        color: ${props => props.theme.success}!important;
-        transition: all 1s ease-in-out;
-    }
-}
+const BurgerIcon = styled(NavbarItem)`
+    cursor: pointer;
+    margin-left: auto;
 `
 
 export default class Header extends PureComponent {
@@ -86,71 +90,18 @@ export default class Header extends PureComponent {
         return (
             <StyledNavbar>
                 <NavbarBrand>
+                    <NavbarItem isHidden="desktop">
+                        <Icon isSize="medium" className="fas fa-user fa-2x"/>
+                    </NavbarItem>
                     <NavbarItem>
                         <HeaderImage src={logo}/>
                     </NavbarItem>
-                    <StyledNavbarItem isHidden="desktop">
-                        <Field>
-                            <HeaderControl hasIcons="left">
-                                <Desktop>
-                                    <Input
-                                        placeholder="поиск по сайту"
-                                        type="text"
-                                        isColor="success"
-                                        isSize="large"/>
-                                    <Icon isSize='large' isAlign='left' className="fas fa-search"></Icon>
-                                </Desktop>
-                                <Touch>
-                                    <Input
-                                        placeholder="поиск по сайту"
-                                        type="text"
-                                        isColor="success"
-                                        isSize="small"/>
-                                    <Icon isSize='small' isAlign='left' className="fas fa-search"></Icon>
-                                </Touch>
-                            </HeaderControl>
-                        </Field>
-                    </StyledNavbarItem>
-                    <StyledNavbarItem isHidden="desktop">
-                        {!this.state.isActive && <Fragment>
-                            <Desktop>
-                                <Button isSize="large" onClick={this.onClickNav}>
-                                    <Icon className="fas fa-bars"></Icon>
-                                </Button>
-                            </Desktop>
-                            <Touch>
-                                <Button isSize="small" onClick={this.onClickNav}>
-                                    <Icon className="fas fa-bars"></Icon>
-                                </Button>
-                            </Touch>
-                        </Fragment>}
-                        {this.state.isActive && <Fragment>
-                            <Desktop>
-                                <Button isSize="large" onClick={this.onClickNav}>
-                                    <Icon className="fas fa-times"></Icon>
-                                </Button>
-                            </Desktop>
-                            < Touch >
-                                <Button isSize="small" onClick={this.onClickNav}>
-                                    <Icon className="fas fa-times"></Icon>
-                                </Button>
-                            </Touch>
-                        </Fragment>}
-                    </StyledNavbarItem>
+                    <BurgerIcon>
+                        <Burger isActive={this.state.isActive} onClickNav={this.onClickNav}/>
+                    </BurgerIcon>
                 </NavbarBrand>
                 <NavbarEnd>
-                    <NavbarItem isHidden="touch">
-                        <Field>
-                            <HeaderControl hasIcons="left">
-                                <Input
-                                    placeholder="поиск по сайту"
-                                    type="text"
-                                    isColor="success"
-                                    isSize="large"/>
-                                <Icon isSize='large' isAlign='left' className="fas fa-search"></Icon>
-                            </HeaderControl>
-                        </Field>
-                    </NavbarItem>
+                    <NavbarItem isHidden="touch"></NavbarItem>
                 </NavbarEnd>
             </StyledNavbar>
         )

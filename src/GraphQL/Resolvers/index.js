@@ -8,7 +8,7 @@ import QueryAllFillings from '../Queries/QueryAllFillings'
 export const listOffers = graphql(QueryAllOffers, {
     options: {
         errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
     },
     props: ({
         data: {
@@ -23,7 +23,7 @@ export const listOffers = graphql(QueryAllOffers, {
 export const listCategories = graphql(QueryAllCategories, {
     options: {
         errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
     },
     props: ({
         data: {
@@ -38,7 +38,7 @@ export const listCategories = graphql(QueryAllCategories, {
 export const listNews = graphql(QueryAllNews, {
     options: {
         errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
     },
     props: ({
         data: {
@@ -53,7 +53,7 @@ export const listNews = graphql(QueryAllNews, {
 export const listProducts = graphql(QueryAllProducts, {
     options: {
         errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
     },
     props: ({
         data: {
@@ -68,7 +68,7 @@ export const listProducts = graphql(QueryAllProducts, {
 export const listFillings = graphql(QueryAllFillings, {
     options: {
         errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network',
     },
     props: ({
         data: {
