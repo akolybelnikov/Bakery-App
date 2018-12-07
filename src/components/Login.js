@@ -1,41 +1,75 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import { Form, Text } from 'informed'
 import {
     Field,
     Label,
     Control,
-    Button
+    Button,
+    Modal,
+    ModalBackground,
+    ModalContent,
+    ModalCard,
+    ModalCardBody,
+    ModalCardFooter,
+    ModalCardHeader,
+    ModalCardTitle,
+    Delete,
+    Icon
 } from 'bloomer'
-import { Auth } from "aws-amplify";
-import Client from 'aws-appsync'
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Auth } from "aws-amplify"
+import Client, { createAppSyncLink } from 'aws-appsync'
+import gql from "graphql-tag"
+import { Query } from "react-apollo"
+import styled from 'styled-components'
+import { InMemoryCache } from "apollo-cache-inmemory"
+import { withClientState } from "apollo-link-state"
+import { ApolloLink } from "apollo-link"
 
+const StyledModal = styled(Modal)`
+    .modal-card {
+        width: auto;
+    }
+    .modal-card-foot {
+        background-color: white;
+    }
+`
 class Login extends Component {
 
     state = {
         busy: false,
-        isAuthenticated: false,
-        isAuthenticating: false
+        isAuthenticating: false,
+        error: null
     }
 
     async componentDidMount() {
         try {
-            const jwt = async() => (await Auth.currentSession()).getAccessToken().getJwtToken()
-            if (jwt) this.userHasAuthenticated(true)
+            const session = await Auth.currentCredentials()
+            console.log(session.authenticated)
         } catch (e) {
             console.error(e)
         }
     }
 
-    handleClick = async (event) => {
+    handleSignIn = async (event) => {
         const { values } = this.formApi.getState()
         event.preventDefault()
 
+        this.setState({ busy: true });
         try {
-            await Auth.signIn(values.email, values.password)
+            await Auth.signIn(values.email.trim(), values.password.trim())
+            this.setState({ busy: false, error: null });
+            this.props.onModalClose()
         } catch (e) {
-            console.log(e)
+            this.setState({ busy: false, error: e });
+        }
+    }
+
+    handleSignOut = async () => {
+        try {
+            await Auth.signOut()
+            this.props.validSession(false)
+        } catch (e) {
+            return e
         }
     }
 
@@ -43,53 +77,97 @@ class Login extends Component {
         this.formApi = formApi
     }
 
-    userHasAuthenticated = authenticated => {
-        this.setState({ isAuthenticated: authenticated });
-    }
-
-    handleLogout = event => {
-        this.userHasAuthenticated(false);
-    }
-
     render() {
+        const { isActive, onModalClose, isAuthenticated } = this.props
         return (
-            <Fragment>
-                <Form getApi={this.setFormApi}>
-                    <Field>
-                        <Label htmlFor="state-email">Email</Label>
-                        <Control>
-                            <Text field="email" id="state-email" placeholder='email' />
-                        </Control>
-                    </Field>
-                    <Field>
-                        <Label htmlFor="state-password">Password</Label>
-                        <Control>
-                            <Text field="password" id="state-password" placeholder='password' />
-                        </Control>
-                    </Field>
-                </Form>
-                <Button onClick={this.handleClick}>Submit</Button>
-                {this.state.isAuthenticated
-                    ? <Users/>
-                    : <div><span>not authenticated</span></div>
-                }
-            </Fragment>
+            <StyledModal isActive={isActive}>
+                <ModalBackground onClick={onModalClose} />
+                <ModalContent>
+                    {!this.state.busy ? <ModalCard>
+                        {!isAuthenticated && !this.state.error && <ModalCardHeader>
+                            <ModalCardTitle className="has-text-primary">Войти</ModalCardTitle>
+                            <Delete onClick={onModalClose} />
+                        </ModalCardHeader>}
+                        <ModalCardBody>
+                            {this.state.error && <p>{this.state.error}</p>}
+                            {!isAuthenticated && !this.state.error && <Form getApi={this.setFormApi}>
+                                <Field>
+                                    <Label htmlFor="state-email">Адрес эл. почты</Label>
+                                    <Control>
+                                        <Text field="email" id="state-email" placeholder='email' className="input" />
+                                    </Control>
+                                </Field>
+                                <Field>
+                                    <Label htmlFor="state-password">Пароль</Label>
+                                    <Control>
+                                        <Text field="password" id="state-password" placeholder='password' className="input" />
+                                    </Control>
+                                </Field>
+                            </Form>}
+                            {!this.state.error && <ModalCardFooter>
+                                <Button isColor="primary" isOutlined isFullWidth isLoading={this.state.busy} onClick={this.handleSignIn}>Войти</Button>
+                            </ModalCardFooter>}
+                            {isAuthenticated
+                                ? <Users />
+                                : <div><span>not authenticated</span></div>
+                            }
+                        </ModalCardBody>
+                    </ModalCard> : <Icon className="fas fa-spinner fa-pulse has-text-white" isSize="large" />}
+                </ModalContent>
+            </StyledModal>
         );
     }
 }
 
 export default Login
 
-const authenticatedClient = new Client({
-    url: process.env.REACT_APP_AWS_APPSYNC_USERS_GRAPHQLENDPOINT,
-    region: process.env.REACT_APP_AWS_APPSYNC_USERS_REGION,
-    auth: {
-        type: process.env.REACT_APP_AWS_APPSYNC_USERS_AUTHENTICATIONTYPE,
-        jwtToken: async () => (await Auth.currentSession()).getAccessToken().getJwtToken(),
+const authConfig = {
+    type: process.env.REACT_APP_AWS_APPSYNC_USERS_AUTHENTICATIONTYPE,
+    jwtToken: async () => (await Auth.currentSession()).getAccessToken().getJwtToken(),
+}
+
+const authenticatedClient = new Client(
+    {
+        disableOffline: true,
+        url: process.env.REACT_APP_AWS_APPSYNC_USERS_GRAPHQLENDPOINT,
+        region: process.env.REACT_APP_AWS_APPSYNC_USERS_REGION,
+        auth: authConfig,
+        complexObjectsCredentials: () => Auth.currentCredentials()
     },
-    complexObjectsCredentials: () => Auth.currentCredentials(),
-    disableOffline: true,
-})
+    // {
+    //     cache,
+    //     link: ApolloLink.from([
+    //         stateLink,
+    //         createAppSyncLink({
+    //             url: process.env.REACT_APP_AWS_APPSYNC_USERS_GRAPHQLENDPOINT,
+    //             region: process.env.REACT_APP_AWS_APPSYNC_USERS_REGION,
+    //             auth: authConfig,
+    //             complexObjectsCredentials: () => Auth.currentCredentials()
+    //         })
+    //     ])
+    // }
+)
+
+// const cache = new InMemoryCache();
+// const stateLink = withClientState({
+//     cache,
+//     defaults: {
+//         user
+//     },
+//     resolvers: {
+//         Mutation: {
+//             addUser: (_, { email }, { cache }) => {
+//                 const query = gql`
+//                     query getUser {
+//                         user @client {
+                            
+//                         }
+//                     }
+//                 `
+//             }
+//         }
+//     }
+// })
 
 const GET_USERS = gql`
     query {

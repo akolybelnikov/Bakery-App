@@ -46,7 +46,7 @@ const Burger = props => {
         : '0'
 
     return (
-        <BurgerIconSvg viewBox="0 0 800 600" onClick={props.onClickNav}>
+        <BurgerIconSvg viewBox="0 0 800 600" onClick={props.onClickBurger}>
             <BurgerIconTopBar
                 style={{
                 strokeDashoffset: offsetTopBottom

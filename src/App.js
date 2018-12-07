@@ -34,20 +34,19 @@ class App extends Component {
     isAuthenticated: false
   }
 
+  userHasAuthenticated = authenticated => {
+    console.log(authenticated)
+    this.setState({ isAuthenticated: authenticated });
+  }
+
   render() {
     const childProps = {
-      offers: this.props.offers,
-      categories: this.props.categories,
-      news: this.props.news,
-      products: this.props.products,
-      fillings: this.props.fillings,
-      isAuthenticated: this.state.isAuthenticated,
-      userHasAuthenticated: this.userHasAuthenticated
+      isAuthenticated: this.state.isAuthenticated
     }
     return (
       <ThemeProvider theme={theme}>
         <RootContainer isFluid>
-          <Header />
+          <Header isAuthenticated={this.state.isAuthenticated} userHasAuthenticated={this.userHasAuthenticated} />
           <Login />
           <Routes childProps={childProps} />
         </RootContainer>
@@ -56,9 +55,11 @@ class App extends Component {
   }
 }
 
-export default compose(
-  Resolver.listOffers,
-  Resolver.listCategories,
-  Resolver.listNews,
-  Resolver.listProducts,
-  Resolver.listFillings)(App)
+export default App
+
+// export default compose(
+//   Resolver.listOffers,
+//   Resolver.listCategories,
+//   Resolver.listNews,
+//   Resolver.listProducts,
+//   Resolver.listFillings)(App)

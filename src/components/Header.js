@@ -1,22 +1,21 @@
-import React, {PureComponent, Fragment} from 'react'
+import React, { PureComponent } from 'react'
 import {
     Navbar,
     NavbarBrand,
     NavbarItem,
     NavbarEnd,
     Image,
-    NavbarBurger,
     Control,
-    Icon,
-    Button
+    Icon
 } from 'bloomer'
 import styled from 'styled-components'
 import logo from '../assets/logos/logo.png'
 import Responsive from 'react-responsive'
 import Burger from './SVG/Burger'
+import Login from './Login'
 
-const Desktop = props => <Responsive {...props} minWidth={736}/>
-const Touch = props => <Responsive {...props} maxWidth={735}/>
+const Desktop = props => <Responsive {...props} minWidth={736} />
+const Touch = props => <Responsive {...props} maxWidth={735} />
 
 const StyledNavbar = styled(Navbar)`
     position: fixed;
@@ -24,6 +23,17 @@ const StyledNavbar = styled(Navbar)`
     right: 0;
     width: 100%;
     background-color: rgba(255,255,255,.5);
+`
+const StyledNavbarBrand = styled(NavbarBrand)`
+    justify-content: space-between;
+    .navbar-item {
+        justify-conent: center;
+    }
+`
+const UserLogin = styled(NavbarItem)`
+    span.icon {
+        width: 60px !important;
+    }
 `
 const HeaderImage = styled(Image)`
     height: 80px;
@@ -68,38 +78,53 @@ const StyledNavbarItem = styled(NavbarItem)`
 `
 const BurgerIcon = styled(NavbarItem)`
     cursor: pointer;
-    margin-left: auto;
 `
 
 export default class Header extends PureComponent {
     constructor(props) {
         super(props);
+        this.login = React.createRef()
 
         this.state = {
-            isActive: false
+            isMenuActive: false,
+            isLoginActive: false,
         };
     }
 
-    onClickNav = () => {
+    onClickBurger = () => {
         this.setState({
-            isActive: !this.state.isActive
+            isMenuActive: !this.state.isMenuActive
         })
     }
 
+    onClickLogin = () => {
+        this.setState({
+            isLoginActive: !this.state.isLoginActive
+        })
+    }
+
+    onSignOut = () => {
+        this.login.current.handleSignOut()
+    }
+
     render() {
+        const { isAuthenticated } = this.props
         return (
             <StyledNavbar>
-                <NavbarBrand>
-                    <NavbarItem isHidden="desktop">
-                        <Icon isSize="medium" className="fas fa-user fa-2x"/>
-                    </NavbarItem>
+                <StyledNavbarBrand>
+                    <UserLogin isHidden="desktop">
+                        {!isAuthenticated
+                            ? <Icon isSize="medium" className="fas fa-sign-in-alt fa-2x" onClick={this.onClickLogin} />
+                            : <Icon isSize="medium" className="fas fa-sign-out-alt fa-2x" onClick={this.onSignOut} />}
+                        <Login isActive={this.state.isLoginActive} onModalClose={this.onClickLogin} ref={this.login} isAuthenticated={isAuthenticated} />
+                    </UserLogin>
                     <NavbarItem>
-                        <HeaderImage src={logo}/>
+                        <HeaderImage src={logo} />
                     </NavbarItem>
-                    <BurgerIcon>
-                        <Burger isActive={this.state.isActive} onClickNav={this.onClickNav}/>
+                    <BurgerIcon isHidden="desktop">
+                        <Burger isActive={this.state.isMenuActive} onClickBurger={this.onClickBurger} />
                     </BurgerIcon>
-                </NavbarBrand>
+                </StyledNavbarBrand>
                 <NavbarEnd>
                     <NavbarItem isHidden="touch"></NavbarItem>
                 </NavbarEnd>
