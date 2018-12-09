@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 
 import Amplify, {Auth} from "aws-amplify";
 
-// window.LOG_LEVEL = 'DEBUG'
+window.LOG_LEVEL = 'DEBUG'
 
 Amplify.configure({
     Auth: {
