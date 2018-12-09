@@ -1,13 +1,7 @@
 import React, {PureComponent} from 'react'
 import {Auth} from 'aws-amplify'
 
-import {
-    Notification,
-    Tabs,
-    TabList,
-    Tab,
-    TabLink
-} from 'bloomer'
+import {Notification, Tabs, TabList, Tab, TabLink} from 'bloomer'
 import StyledContainer from '../components/UI/StyledContainer'
 import StyledColumns from '../components/UI/StyledColumns'
 import StyledColumn from '../components/UI/StyledColumn'
@@ -130,8 +124,7 @@ class Authenticate extends PureComponent {
                                 attribute={this.state.attribute}
                                 onAttributeToggle={this.onAttributeToggle}
                                 onFormChange={this.onFormChange}
-                                handleSignIn={this.handleSignIn}/>
-}
+                                handleSignIn={this.handleSignIn}/>}
                         <div
                             style={{
                             minHeight: '20vh'
