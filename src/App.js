@@ -41,9 +41,11 @@ const client = new AWSAppSyncClient({
   offlineConfig: {
     callback: (err, succ) => {
       if (err) {
+        // eslint-disable-next-line no-unused-vars
         const { mutation, variables } = err
         console.warn(`Error for ${mutation}`, err)
       } else {
+        // eslint-disable-next-line no-unused-vars
         const { mutation, variables } = succ
         console.info(`Success for ${mutation}`, succ)
       }
