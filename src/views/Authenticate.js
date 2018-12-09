@@ -15,7 +15,7 @@ class Authenticate extends PureComponent {
         error: null,
         email: null,
         password: null,
-        attribute: 'text',
+        attribute: 'password',
         signup: true
     }
 
