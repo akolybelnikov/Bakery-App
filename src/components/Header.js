@@ -120,7 +120,10 @@ export default class Header extends PureComponent {
                         }
                     </UserLogin>
                     <BurgerIcon isHidden="desktop">
-                        <Burger isActive={this.state.isMenuActive} onClickBurger={this.onClickBurger}/>
+                        <Burger 
+                            isActive={this.state.isMenuActive} 
+                            onClickBurger={this.onClickBurger}
+                        />
                     </BurgerIcon>
                 </StyledNavbarBrand>
                 <NavbarEnd>
@@ -149,7 +152,9 @@ const User = ({id}) => {
                 if (data) {
                     if (data.getUser.firstname) {
                         return (
-                            <span className="is-size-7 is-capitalized">Здравствуйте, {data.getUser.fisrtname}</span>
+                            <span className="is-size-7 is-capitalized">
+                                Здравствуйте, {data.getUser.fisrtname}
+                            </span>
                         )
                     } else {
                         return (

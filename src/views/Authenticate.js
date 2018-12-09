@@ -35,20 +35,10 @@ class Authenticate extends PureComponent {
                     .userHasAuthenticated(true)
             } catch (e) {
                 console.warn(e)
-                let message = ''
-                switch (e.code) {
-                    case 'NotAuthorizedException':
-                        message = 'Неверное имя пользователя или пароль.'
-                        this.setState({busy: false, error: message})
-                        return
-                    case 'UserNotFoundException':
-                        message = 'Пользователь не существует.'
-                        this.setState({busy: false, error: message})
-                        return
-                    default:
-                        message = 'Произошла ошибка и мы не смогли получить ваши данные ... Печально.'
-                        this.setState({busy: false, error: message})
-                }
+                this.setState({
+                    busy: false,
+                    error: this.handleError(e)
+                })
             }
         }
     }
@@ -65,17 +55,25 @@ class Authenticate extends PureComponent {
                 this.setState({busy: false});
             } catch (e) {
                 console.warn(e)
-                let message = ''
-                switch (e.code) {
-                    case 'UsernameExistsException':
-                        message = 'Пользователь с указанным адресом электронной почты уже существует.'
-                        this.setState({busy: false, error: message})
-                        return
-                    default:
-                        message = 'Произошла ошибка и мы не смогли получить ваши данные ... Печально.'
-                        this.setState({busy: false, error: message})
-                }
+                this.setState({
+                    busy: false,
+                    error: this.handleError(e)
+                })
+
             }
+        }
+    }
+
+    handleError = (err) => {
+        switch (err.code) {
+            case 'UsernameExistsException':
+                return 'Пользователь с указанным адресом электронной почты уже существует.'
+            case 'NotAuthorizedException':
+                return 'Неверное имя пользователя или пароль.'
+            case 'UserNotFoundException':
+                return 'Пользователь не существует.'
+            default:
+                return 'Произошла ошибка и мы не смогли получить ваши данные ... Печально.'
         }
     }
 
@@ -90,13 +88,17 @@ class Authenticate extends PureComponent {
     }
 
     onToggleSignup = () => {
-        if (this.state.error) this.setState({error: null})
-        if (!this.state.signup) this.setState({signup: true})
+        if (this.state.error) 
+            this.setState({error: null})
+        if (!this.state.signup) 
+            this.setState({signup: true})
     }
 
     onToggleLogin = () => {
-        if (this.state.error) this.setState({error: null})
-        if (this.state.signup) this.setState({signup: false})
+        if (this.state.error) 
+            this.setState({error: null})
+        if (this.state.signup) 
+            this.setState({signup: false})
     }
 
     render() {

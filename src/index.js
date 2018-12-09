@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 
 import Amplify, {Auth} from "aws-amplify";
 
-window.LOG_LEVEL = 'DEBUG'
+// window.LOG_LEVEL = 'DEBUG'
 
 Amplify.configure({
     Auth: {
@@ -23,7 +23,10 @@ Amplify.configure({
 (async function () {
     const info = await Auth.currentUserInfo()
     if (!info) 
-        await Auth.signIn(process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD)
+        await Auth.signIn(
+            process.env.REACT_APP_DEFAULT_USER_EMAIL,
+            process.env.REACT_APP_DEFAULT_USER_PASSWORD
+        )
     ReactDOM.render(
         <Router><App/></Router>, document.getElementById('root'));
 })()

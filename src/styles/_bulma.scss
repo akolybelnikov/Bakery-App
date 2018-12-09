@@ -12,6 +12,7 @@
         url("../assets/fonts/Raleway-v4020-Bold.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
+    font-display: auto;
 }
 
 @font-face {
@@ -24,6 +25,7 @@
         url("../assets/fonts/Raleway-v4020-SemiBold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
+    font-display: auto;
 }
 
 @font-face {
@@ -36,6 +38,7 @@
         url("../assets/fonts/Raleway-v4020-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
+    font-display: auto;
 }
 
 // override ./assets/fonts
