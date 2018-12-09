@@ -26,11 +26,20 @@ const RootContainer = styled(Container)`
   color: ${props => props.theme.info}!important;
 `
 
-const authConfig = {
-  type: process.env.REACT_APP_AWS_APPSYNC_AUTHENTICATIONTYPE,
-  jwtToken: async() => (await Auth.currentSession())
+async function init__login() {
+  const info = await Auth.currentUserInfo()
+  if (!info) {
+    await Auth.signIn(process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD)
+  }
+  const creds = await Auth.currentSession()
+  return creds
     .getAccessToken()
     .getJwtToken()
+}
+
+const authConfig = {
+  type: process.env.REACT_APP_AWS_APPSYNC_AUTHENTICATIONTYPE,
+  jwtToken: async() => (await init__login())
 }
 
 const client = new AWSAppSyncClient({
@@ -42,15 +51,15 @@ const client = new AWSAppSyncClient({
     callback: (err, succ) => {
       if (err) {
         // eslint-disable-next-line no-unused-vars
-        const { mutation, variables } = err
+        const {mutation, variables} = err
         console.warn(`Error for ${mutation}`, err)
       } else {
         // eslint-disable-next-line no-unused-vars
-        const { mutation, variables } = succ
+        const {mutation, variables} = succ
         console.info(`Success for ${mutation}`, succ)
       }
-    },
-  },
+    }
+  }
 })
 
 class App extends Component {
