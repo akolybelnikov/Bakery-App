@@ -6,8 +6,7 @@ import {
     CardHeaderTitle,
     CardContent,
     Columns,
-    Column,
-    Section
+    Column
 } from 'bloomer'
 import styled from 'styled-components'
 import Responsive from 'react-responsive'
@@ -31,76 +30,74 @@ const StyledTitle = styled(CardHeaderTitle)`
 
 const Categories = props => {
     return (
-        <Section>
-            <Card>
-                <CardHeader hasTextAlign="centered">
-                    <StyledTitle>Наш Ассортимент</StyledTitle>
-                </CardHeader>
-                <CardContent>
-                    <HandsetPortrait>
-                        <Columns isCentered>
-                            {props.categories && props
-                                .categories
-                                .map(category => (
-                                    <React.Fragment key={category.name}>
-                                        <HandsetSmall>
-                                            <Column key={category.name} isSize='1/3'>
-                                                <CategoryCard size={'250x250'} image={category.image} title={category.title}/>
-                                            </Column>
-                                        </HandsetSmall>
-                                        <Handset>
-                                            <Column key={category.name} isSize='1/3'>
-                                                <CategoryCard size={'350x350'} image={category.image} title={category.title}/>
-                                            </Column>
-                                        </Handset>
-                                    </React.Fragment>
-                                ))}
-                        </Columns>
-                    </HandsetPortrait>
-                    <HandsetLandscape>
-                        <Columns isCentered isMobile>
-                            {props.categories && props
-                                .categories
-                                .map(category => (
-                                    <Column key={category.name} isSize='1/3'>
+        <Card>
+            <CardHeader hasTextAlign="centered">
+                <StyledTitle>Наш Ассортимент</StyledTitle>
+            </CardHeader>
+            <CardContent>
+                <HandsetPortrait>
+                    <Columns isCentered>
+                        {props.categories && props
+                            .categories
+                            .map(category => (
+                                <React.Fragment key={category.name}>
+                                    <HandsetSmall>
+                                        <Column key={category.name} isSize='1/3'>
+                                            <CategoryCard size={'250x250'} image={category.image} title={category.title}/>
+                                        </Column>
+                                    </HandsetSmall>
+                                    <Handset>
+                                        <Column key={category.name} isSize='1/3'>
+                                            <CategoryCard size={'350x350'} image={category.image} title={category.title}/>
+                                        </Column>
+                                    </Handset>
+                                </React.Fragment>
+                            ))}
+                    </Columns>
+                </HandsetPortrait>
+                <HandsetLandscape>
+                    <Columns isCentered isMobile>
+                        {props.categories && props
+                            .categories
+                            .map(category => (
+                                <Column key={category.name} isSize='1/3'>
+                                    <CategoryCard size={'200x200'} image={category.image} title={category.title}/>
+                                </Column>
+                            ))}
+                    </Columns>
+                </HandsetLandscape>
+                <TouchPortrait>
+                    <Columns isCentered isMobile>
+                        {props.categories && props
+                            .categories
+                            .map(category => (
+                                <Column key={category.name} isSize='1/3'>
+                                    <CategoryCard size={'250x250'} image={category.image} title={category.title}/>
+                                </Column>
+                            ))}
+                    </Columns>
+                </TouchPortrait>
+                <LargeScreens>
+                    <Columns isCentered>
+                        {props.categories && props
+                            .categories
+                            .map(category => (
+                                <Column key={category.name} isSize='1/3'>
+                                    <Widescreen>
+                                        <CategoryCard size={'600x600'} image={category.image} title={category.title}/>
+                                    </Widescreen>
+                                    <Desktop>
+                                        <CategoryCard size={'300x300'} image={category.image} title={category.title}/>
+                                    </Desktop>
+                                    <Tablet>
                                         <CategoryCard size={'200x200'} image={category.image} title={category.title}/>
-                                    </Column>
-                                ))}
-                        </Columns>
-                    </HandsetLandscape>
-                    <TouchPortrait>
-                        <Columns isCentered isMobile>
-                            {props.categories && props
-                                .categories
-                                .map(category => (
-                                    <Column key={category.name} isSize='1/3'>
-                                        <CategoryCard size={'250x250'} image={category.image} title={category.title}/>
-                                    </Column>
-                                ))}
-                        </Columns>
-                    </TouchPortrait>
-                    <LargeScreens>
-                        <Columns isCentered>
-                            {props.categories && props
-                                .categories
-                                .map(category => (
-                                    <Column key={category.name} isSize='1/3'>
-                                        <Widescreen>
-                                            <CategoryCard size={'600x600'} image={category.image} title={category.title}/>
-                                        </Widescreen>
-                                        <Desktop>
-                                            <CategoryCard size={'300x300'} image={category.image} title={category.title}/>
-                                        </Desktop>
-                                        <Tablet>
-                                            <CategoryCard size={'200x200'} image={category.image} title={category.title}/>
-                                        </Tablet>
-                                    </Column>
-                                ))}
-                        </Columns>
-                    </LargeScreens>
-                </CardContent>
-            </Card>
-        </Section>
+                                    </Tablet>
+                                </Column>
+                            ))}
+                    </Columns>
+                </LargeScreens>
+            </CardContent>
+        </Card>
     )
 }
 

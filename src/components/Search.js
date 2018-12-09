@@ -1,17 +1,25 @@
 import React from 'react'
 import {
-    NavbarItem,
     Field,
     Control,
     Icon,
     Input
 } from 'bloomer'
 import Responsive from 'react-responsive'
+import styled from 'styled-components'
+
+const HeaderControl = styled(Control)`
+    span.icon {
+        color: ${props => props.theme.success}!important;
+        transition: all 1s ease-in-out;
+    }
+}
+`
 
 const Desktop = props => <Responsive {...props} minWidth={736}/>
 const Touch = props => <Responsive {...props} maxWidth={735}/>
 
-export default SearchBar = props => {
+export default () => {
     return (
         <div>
         <Field>

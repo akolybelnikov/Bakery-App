@@ -1,6 +1,6 @@
-import graphql from 'graphql-tag'
+import gql from 'graphql-tag'
 
-export default graphql(`
+export default gql(`
 query {
     listOffers (filter: {status: {eq: "active"}}) {
         items {

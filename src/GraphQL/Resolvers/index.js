@@ -5,11 +5,13 @@ import QueryAllNews from '../Queries/QueryAllNews'
 import QueryAllProducts from '../Queries/QueryAllProducts'
 import QueryAllFillings from '../Queries/QueryAllFillings'
 
+const options = {
+    errorPolicy: 'all',
+    fetchPolicy: 'cache-first',
+}
+
 export const listOffers = graphql(QueryAllOffers, {
-    options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network',
-    },
+    options: options,
     props: ({
         data: {
             listOffers = {
@@ -21,10 +23,7 @@ export const listOffers = graphql(QueryAllOffers, {
 })
 
 export const listCategories = graphql(QueryAllCategories, {
-    options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network',
-    },
+    options: options,
     props: ({
         data: {
             listCategories = {
@@ -36,10 +35,7 @@ export const listCategories = graphql(QueryAllCategories, {
 })
 
 export const listNews = graphql(QueryAllNews, {
-    options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network',
-    },
+    options: options,
     props: ({
         data: {
             listNews = {
@@ -51,10 +47,7 @@ export const listNews = graphql(QueryAllNews, {
 })
 
 export const listProducts = graphql(QueryAllProducts, {
-    options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network',
-    },
+    options: options,
     props: ({
         data: {
             listProducts = {
@@ -66,10 +59,7 @@ export const listProducts = graphql(QueryAllProducts, {
 })
 
 export const listFillings = graphql(QueryAllFillings, {
-    options: {
-        errorPolicy: 'all',
-        fetchPolicy: 'cache-and-network',
-    },
+    options: options,
     props: ({
         data: {
             listFillings = {
