@@ -8,8 +8,6 @@ import UnauthenticatedRoute from './components/Router/UnauthenticatedRoute'
 const AsyncHome = AsyncComponent(() => import ('./views/Home'))
 const AsyncAuthenticate = AsyncComponent(() => import ('./views/Authenticate'))
 const AsyncUserProfile = AsyncComponent(() => import ('./views/UserProfile'))
-const AsyncLogin = AsyncComponent(() => import ('./components/Authenticate/Login'))
-const AsyncSignup = AsyncComponent(() => import ('./components/Authenticate/Signup'))
 
 export default({childProps}) => 
     <Switch>

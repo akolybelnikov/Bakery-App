@@ -89,12 +89,14 @@ class Authenticate extends PureComponent {
             : this.setState({attribute: 'password'})
     }
 
-    onTabToggle = () => {
-        if (this.state.error) 
-            this.setState({error: null})
-        this.setState(prevState => ({
-            signup: !prevState.signup
-        }))
+    onToggleSignup = () => {
+        if (this.state.error) this.setState({error: null})
+        if (!this.state.signup) this.setState({signup: true})
+    }
+
+    onToggleLogin = () => {
+        if (this.state.error) this.setState({error: null})
+        if (this.state.signup) this.setState({signup: false})
     }
 
     render() {
@@ -105,10 +107,10 @@ class Authenticate extends PureComponent {
                         <Tabs isBoxed isFullWidth>
                             <TabList>
                                 <Tab isActive={this.state.signup}>
-                                    <TabLink onClick={this.onTabToggle}>Новый пользователь</TabLink>
+                                    <TabLink onClick={this.onToggleSignup}>Зарегестрироваться</TabLink>
                                 </Tab>
                                 <Tab isActive={!this.state.signup}>
-                                    <TabLink onClick={this.onTabToggle}>Войти</TabLink>
+                                    <TabLink onClick={this.onToggleLogin}>Войти</TabLink>
                                 </Tab>
                             </TabList>
                         </Tabs>
