@@ -37,8 +37,18 @@ const client = new AWSAppSyncClient({
   url: process.env.REACT_APP_AWS_APPSYNC_GRAPHQLENDPOINT,
   region: process.env.REACT_APP_AWS_APPSYNC_REGION,
   auth: authConfig,
-  disableOffline: true,
-  complexObjectsCredentials: () => Auth.currentCredentials()
+  complexObjectsCredentials: () => Auth.currentCredentials(),
+  offlineConfig: {
+    callback: (err, succ) => {
+      if (err) {
+        const { mutation, variables } = err
+        console.warn(`Error for ${mutation}`, err)
+      } else {
+        const { mutation, variables } = succ
+        console.info(`Success for ${mutation}`, succ)
+      }
+    },
+  },
 })
 
 class App extends Component {

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import {NavLink} from "react-router-dom";
 import {Auth} from 'aws-amplify'
-import Client from 'aws-appsync'
 import GET_USER from '../GraphQL/Queries/QueryUser'
 import {Query} from 'react-apollo'
 
@@ -75,8 +74,7 @@ export default class Header extends PureComponent {
         this.login = React.createRef()
 
         this.state = {
-            isMenuActive: false,
-            isLoginActive: false
+            isMenuActive: false
         };
     }
 
@@ -116,10 +114,10 @@ export default class Header extends PureComponent {
                     <UserLogin isHidden="desktop">
                         {isAuthenticated
                             ? <NavLink to="/user"><User id={username}/></NavLink>
-                            : <NavLink to="/login">
+                            : <NavLink to="/authenticate">
                                 <span className="is-size-7">Вход пользователя</span>
                             </NavLink>
-}
+                        }
                     </UserLogin>
                     <BurgerIcon isHidden="desktop">
                         <Burger isActive={this.state.isMenuActive} onClickBurger={this.onClickBurger}/>
