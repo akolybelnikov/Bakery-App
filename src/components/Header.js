@@ -76,20 +76,17 @@ export default class Header extends PureComponent {
 
         this.state = {
             isMenuActive: false,
-            isLoginActive: false,
-            username: null
+            isLoginActive: false
         };
     }
 
     async componentDidMount() {
         try {
             const info = await Auth.currentUserInfo()
-            console.log(info)
             if (info.attributes.sub !== process.env.REACT_APP_DEFAULT_USERNAME) {
                 this
                     .props
                     .userHasAuthenticated(true)
-                this.setState({username: info.attributes.sub})
             } else {
                 this
                     .props
@@ -109,7 +106,7 @@ export default class Header extends PureComponent {
     }
 
     render() {
-        const {isAuthenticated} = this.props
+        const {isAuthenticated, username} = this.props
         return (
             <StyledNavbar className="navbar is-fixed-top">
                 <StyledNavbarBrand>
@@ -118,7 +115,7 @@ export default class Header extends PureComponent {
                     </NavbarItem>
                     <UserLogin isHidden="desktop">
                         {isAuthenticated
-                            ? <NavLink to="/user"><User id={this.state.username}/></NavLink>
+                            ? <NavLink to="/user"><User id={username}/></NavLink>
                             : <NavLink to="/login">
                                 <span className="is-size-7">Вход пользователя</span>
                             </NavLink>

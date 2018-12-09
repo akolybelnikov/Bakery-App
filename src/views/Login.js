@@ -10,8 +10,6 @@ import {
     Notification,
     Card,
     CardContent,
-    CardFooter,
-    CardFooterItem,
     Icon
 } from 'bloomer'
 import StyledContainer from '../components/UI/StyledContainer'
@@ -27,23 +25,20 @@ class Login extends PureComponent {
 
     handleSignIn = async event => {
         event.preventDefault()
-
-        const {values} = this
-            .formApi
-            .getState()
-
+        const {values} = this.formApi.getState()
         this.setState({busy: true, error: null})
-
         try {
             await Auth.signIn(values.email.trim(), values.password.trim())
+            const info = await Auth.currentUserInfo()
+            this.props.setUsername(info.attributes.sub)
             this.setState({busy: false});
+            this.props.userHasAuthenticated(true)
         } catch (e) {
             this.setState({
                 busy: false,
                 error: e.message.toString()
             });
         }
-        this.props.userHasAuthenticated(true)
     }
 
     setFormApi = (formApi) => {
@@ -76,22 +71,26 @@ class Login extends PureComponent {
                                                         className="input"/>
                                                 </Control>
                                             </Field>
-                                        </CardContent>
-                                        <CardFooter>
-                                            <CardFooterItem>
+                                            <Field>
                                                 <Button
                                                     isColor="primary"
                                                     isOutlined
                                                     isFullWidth
                                                     isLoading={this.state.busy}
                                                     onClick={this.handleSignIn}>Войти</Button>
-                                            </CardFooterItem>
-                                        </CardFooter>
+                                            </Field>
+                                        </CardContent>
                                     </Card>
                                 </Form>
                             : <div><Icon className="fas fa-spinner fa-pulse" isSize="large"/></div>
 }
-                        {this.state.error && <Notification style={{marginBlockStart: 20}} hasTextAlign="centered" isColor="warning" hasTextColor="white">{this.state.error}</Notification>}
+                        {this.state.error && <Notification
+                            style={{
+                            marginBlockStart: 20
+                        }}
+                            hasTextAlign="centered"
+                            isColor="warning"
+                            hasTextColor="white">{this.state.error}</Notification>}
                     </StyledColumn>
                 </StyledColumns>
             </StyledContainer>

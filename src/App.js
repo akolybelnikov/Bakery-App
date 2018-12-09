@@ -50,8 +50,20 @@ class App extends Component {
       busy: false,
       isAuthenticated: false,
       userHasAuthenticated: false,
-      isAuthenticating: false
+      isAuthenticating: false,
+      username: null
     };
+  }
+
+  async componentDidMount() {
+    try {
+      const info = await Auth.currentUserInfo()
+      if (info && info.attributes.sub !== process.env.REACT_APP_DEFAULT_USERNAME) {
+        this.setUsername(info.attributes.sub)
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   userHasAuthenticated = authenticated => {
@@ -62,16 +74,22 @@ class App extends Component {
     this.setState({isAuthenticating: authenticating})
   }
 
+  setUsername = (username) => {
+    this.setState({username: username})
+  }
+
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
       isAuthenticating: this.state.isAuthenticating,
-      userHasAuthenticated: this.userHasAuthenticated
+      userHasAuthenticated: this.userHasAuthenticated,
+      setUsername: this.setUsername
     }
     return (
       <ThemeProvider theme={theme}>
         <RootContainer>
           <Header
+            username={this.state.username}
             isAuthenticated={this.state.isAuthenticated}
             userHasAuthenticated={this.userHasAuthenticated}/>
           <Routes childProps={childProps}/>

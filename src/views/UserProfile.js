@@ -16,6 +16,10 @@ export default props => {
             props
                 .history
                 .push("/")
+            await Auth.signIn(
+                process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD
+            )
+            props.setUsername(null)
         } catch (e) {
             console.error(e)
         }
@@ -26,8 +30,7 @@ export default props => {
         <StyledContainer>
             <StyledColumns>
                 <StyledColumn>
-                    <Button isFullWidth isColor="primary" isOutlined onClick={handleSignOut}>Выйдти
-                    </Button>
+                    <Button isFullWidth isColor="primary" isOutlined onClick={handleSignOut}>Выйдти</Button>
                 </StyledColumn>
             </StyledColumns>
         </StyledContainer>

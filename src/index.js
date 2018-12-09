@@ -20,15 +20,12 @@ Amplify.configure({
     }
 });
 
-(async function initialAuth() {
-    try {
-        const info = await Auth.currentUserInfo()
-        if (!info) await Auth.signIn(process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD)
-        ReactDOM.render(
-            <Router><App/></Router>, document.getElementById('root'));
-    } catch (e) {
-        console.error(e)
-    }
+(async function () {
+    const info = await Auth.currentUserInfo()
+    if (!info) 
+        await Auth.signIn(process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD)
+    ReactDOM.render(
+        <Router><App/></Router>, document.getElementById('root'));
 })()
 
 serviceWorker.unregister();
