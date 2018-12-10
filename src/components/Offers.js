@@ -3,7 +3,7 @@ import {Query} from 'react-apollo'
 import LIST_OFFERS from '../GraphQL/Queries/QueryAllOffers'
 import CenteredSpinner from './UI/CenteredSpinner'
 
-const Offers = (props) => {
+const Offers = () => {
     return (
         <Query query={LIST_OFFERS} fetchPolicy="cache-first" errorPolicy="all">
             {({loading, error, data}) => {

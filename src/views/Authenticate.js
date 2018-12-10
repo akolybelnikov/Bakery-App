@@ -1,12 +1,20 @@
-import React, {PureComponent} from 'react'
-import {Auth} from 'aws-amplify'
+import React, { PureComponent, Fragment } from 'react'
+import { Auth } from 'aws-amplify'
 
-import {Notification, Tabs, TabList, Tab, TabLink} from 'bloomer'
+import { Notification, Tabs, TabList, Tab, TabLink, Card, CardContent, Field } from 'bloomer'
 import StyledContainer from '../components/UI/StyledContainer'
 import StyledColumns from '../components/UI/StyledColumns'
 import StyledColumn from '../components/UI/StyledColumn'
 import Login from '../components/Authenticate/Login'
 import Signup from '../components/Authenticate/Signup'
+import Confirm from '../components/Authenticate/Confirm'
+import {handleError} from '../lib/awsErrorHelper'
+import styled from 'styled-components'
+
+const Error = styled(Notification)`
+    min-height: 20%;
+    margin-block-start: 20px;
+`
 
 class Authenticate extends PureComponent {
 
@@ -16,20 +24,22 @@ class Authenticate extends PureComponent {
         email: null,
         password: null,
         attribute: 'password',
-        signup: true
+        signup: true,
+        confirm: false,
+        username: null
     }
 
     handleSignIn = async event => {
         event.preventDefault()
         if (this.state.email && this.state.password) {
-            this.setState({busy: true, error: null})
+            this.setState({ busy: true, error: null })
             try {
                 await Auth.signIn(this.state.email.trim(), this.state.password.trim())
                 const info = await Auth.currentUserInfo()
                 this
                     .props
                     .setUsername(info.attributes.sub)
-                this.setState({busy: false});
+                this.setState({ busy: false });
                 this
                     .props
                     .userHasAuthenticated(true)
@@ -37,68 +47,46 @@ class Authenticate extends PureComponent {
                 console.warn(e)
                 this.setState({
                     busy: false,
-                    error: this.handleError(e)
+                    error: handleError(e.code)
                 })
             }
-        }
-    }
-
-    handleSignUp = async event => {
-        event.preventDefault()
-        if (this.state.email && this.state.password) {
-            this.setState({busy: true, error: null})
-            try {
-                const signup = await Auth.signUp(this.state.email.trim(), this.state.password.trim())
-                console.info(signup)
-                // const info = await Auth.currentUserInfo() this     .props
-                // .setUsername(info.attributes.sub)
-                this.setState({busy: false});
-            } catch (e) {
-                console.warn(e)
-                this.setState({
-                    busy: false,
-                    error: this.handleError(e)
-                })
-
-            }
-        }
-    }
-
-    handleError = (err) => {
-        switch (err.code) {
-            case 'UsernameExistsException':
-                return 'Пользователь с указанным адресом электронной почты уже существует.'
-            case 'NotAuthorizedException':
-                return 'Неверное имя пользователя или пароль.'
-            case 'UserNotFoundException':
-                return 'Пользователь не существует.'
-            default:
-                return 'Произошла ошибка и мы не смогли получить ваши данные ... Печально.'
         }
     }
 
     onFormChange = (values) => {
-        this.setState({email: values.email, password: values.password})
+        this.setState({ email: values.email, password: values.password })
     }
 
     onAttributeToggle = () => {
         this.state.attribute === 'password'
-            ? this.setState({attribute: 'text'})
-            : this.setState({attribute: 'password'})
+            ? this.setState({ attribute: 'text' })
+            : this.setState({ attribute: 'password' })
     }
 
     onToggleSignup = () => {
-        if (this.state.error) 
-            this.setState({error: null})
-        if (!this.state.signup) 
-            this.setState({signup: true})
+        if (this.state.error)
+            this.setState({ error: null })
+        if (!this.state.signup)
+            this.setState({ signup: true })
     }
 
     onToggleLogin = () => {
-        if (this.state.error) 
-            this.setState({error: null})
-        if (this.state.signup) 
-            this.setState({signup: false})
+        if (this.state.error)
+            this.setState({ error: null })
+        if (this.state.signup)
+            this.setState({ signup: false })
+    }
+
+    onCodeChange = (values) => {
+        console.info(values)
+    }
+
+    onHandleSubmit = () => {
+        console.log(`submitted`)
+    }
+
+    onCodeRequest = () => {
+        this.setState({ confirmation: true })
     }
 
     render() {
@@ -109,38 +97,45 @@ class Authenticate extends PureComponent {
                         <Tabs isBoxed isFullWidth>
                             <TabList>
                                 <Tab isActive={this.state.signup}>
-                                    <TabLink onClick={this.onToggleSignup}>Зарегестрироваться</TabLink>
+                                    <TabLink onClick={this.onToggleSignup}>Регистрация</TabLink>
                                 </Tab>
                                 <Tab isActive={!this.state.signup}>
-                                    <TabLink onClick={this.onToggleLogin}>Войти</TabLink>
+                                    <TabLink onClick={this.onToggleLogin}>Вход</TabLink>
                                 </Tab>
                             </TabList>
                         </Tabs>
-                        {this.state.signup
-                            ? <Signup
-                                    busy={this.state.busy}
-                                    attribute={this.state.attribute}
-                                    onAttributeToggle={this.onAttributeToggle}
-                                    onFormChange={this.onFormChange}
-                                    handleSignUp={this.handleSignUp}/>
-                            : <Login
-                                busy={this.state.busy}
-                                attribute={this.state.attribute}
-                                onAttributeToggle={this.onAttributeToggle}
-                                onFormChange={this.onFormChange}
-                                handleSignIn={this.handleSignIn}/>}
-                        <div
-                            style={{
-                            minHeight: '20vh'
-                        }}>
-                            {this.state.error && <Notification
-                                style={{
-                                marginBlockStart: 20
-                            }}
-                                hasTextAlign="centered"
-                                isColor="warning"
-                                hasTextColor="white">{this.state.error}</Notification>}
-                        </div>
+                        <Card>
+                            <CardContent>
+                                {this.state.signup
+                                    ? this.state.confirm
+                                        ? <Fragment>
+                                            <Field className="has-text-left"><p className="is-size-7-mobile">Введите код подтверждения</p></Field>
+                                            <Confirm
+                                                busy={this.state.busy}
+                                                onFormChange={this.onCodeChange}
+                                                onHandleSubmit={this.onHandleSubmit} />
+                                            <Field className="has-text-left"><a role="button" className="is-size-7-mobile">Регистрация нового пользователя</a></Field>
+                                        </Fragment>
+                                        : <Fragment>
+                                            <Field className="has-text-left"><p className="is-size-7-mobile">Регистрация нового пользователя</p></Field>
+                                            <Signup
+                                                attribute={this.state.attribute}
+                                                onAttributeToggle={this.onAttributeToggle} />
+                                        </Fragment>
+                                    : <Fragment>
+                                        <Field className="has-text-left"><p className="is-size-7-mobile">Вход для зарегистририванных пользователей</p></Field>
+                                        <Login
+                                            busy={this.state.busy}
+                                            attribute={this.state.attribute}
+                                            onAttributeToggle={this.onAttributeToggle}
+                                            onFormChange={this.onFormChange}
+                                            handleSignIn={this.handleSignIn} />
+                                    </Fragment>}
+                            </CardContent>
+                        </Card>
+                        {this.state.error && <Error
+                            hasTextAlign="centered"
+                            isColor="warning">{this.state.error}</Error>}
                     </StyledColumn>
                 </StyledColumns>
             </StyledContainer>
