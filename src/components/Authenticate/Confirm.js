@@ -41,13 +41,11 @@ const withMutation = (Component) => {
     }
 }
 
-// onRepeatedCodeRequest, onSendRepeatedCodeRequest
-
 const Confirm = withMutation(class extends PureComponent {
 
     state = {
         busy: false,
-        requestCode: false
+        error: null
     }
 
     onSendCodeConfirmation = async(values) => {
@@ -57,31 +55,49 @@ const Confirm = withMutation(class extends PureComponent {
             try {
                 const data = await Auth.confirmSignUp(this.props.id, code)
                 console.info(data)
-                this.props.onModalOpen(
-                    'Пользователь успешно зарегистрирован. Вы можете войти в приложение с указанными при регистрации адресом электронной почты и паролем'
-                )
-                this.props.success()
+                try {
+                    const mutation = await this
+                        .props
+                        .mutate({
+                            variables: {
+                                input: {
+                                    status: 'CONFIRMED'
+                                }
+                            }
+                        })
+                    console.info(mutation)
+                    this
+                        .props
+                        .onModalOpen('Пользователь успешно зарегистрирован. Вы можете войти в приложение с указанными ' +
+                                'при регистрации адресом электронной почты и паролем')
+                    this
+                        .props
+                        .success()
+                } catch (e) {
+                    console.warn(e)
+                }
             } catch (e) {
                 console.error(e)
+                this.setState({
+                    error: handleError(e.code)
+                })
             }
         }
     }
 
-    onRepeatedCodeRequest = async () => {
+    onRepeatedCodeRequest = async() => {
         await Auth.resendSignUp(this.props.id)
+        window.alert(`Мы выслали Вам новый код подтверждения на указанный адрес электронной почты. Ловите!`)
     }
 
-    onSendRepeatedCodeRequest = (values) => {
-        Auth.resendSignUp()
-        console.log(values.email, this.state.code)
-    }
+    onSendExistingCode = () => {}
 
     render() {
         return (
             <Fragment>
                 {!this.state.busy && <Fragment>
-                    {!this.state.requestCode && <Form onSubmit={this.onSendCodeConfirmation}>
-                        {({formState}) => (
+                    {!this.props.hasCode && <Form onSubmit={this.onSendCodeConfirmation}>
+                        {() => (
                             <Fragment>
                                 <Bar isMobile="true">
                                     {[...range(0, 6)].map((_, index) => (
@@ -106,8 +122,8 @@ const Confirm = withMutation(class extends PureComponent {
                             </Fragment>
                         )}
                     </Form>}
-                    {this.state.requestCode && <Form onSubmit={this.onSendRepeatedCodeRequest}>
-                        {({formState}) => (
+                    {this.props.hasCode && <Form onSubmit={this.onSendExistingCode}>
+                        {() => (
                             <Fragment>
                                 <Field className="has-text-left">
                                     <p className="is-size-7-mobile">Адрес электронной почты использованный при регистрации</p>
@@ -125,6 +141,10 @@ const Confirm = withMutation(class extends PureComponent {
                     </Form>}
                 </Fragment>}
                 {this.state.busy && <div><Icon className="fas fa-spinner fa-pulse" isSize="large"/></div>}
+                {this.state.error && <Message isColor="warn">
+                    <MessageHeader><Delete onClick={() => this.setState({error: null})} /></MessageHeader>
+                    <MessageBody>{this.state.error}</MessageBody>
+                </Message>}
             </Fragment>
         )
     }

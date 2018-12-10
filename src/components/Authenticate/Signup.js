@@ -39,9 +39,8 @@ const withMutation = (Component) => {
     }
 }
 
-const SignUp = withMutation(
-    class extends PureComponent {
-        
+const SignUp = withMutation(class extends PureComponent {
+
     state = {
         busy: false,
         error: null
@@ -65,7 +64,9 @@ const SignUp = withMutation(
                             }
                         })
                     console.info(mutation)
-                    this.props.onEmailconfirm(mutation.data.id)
+                    this
+                        .props
+                        .onEmailconfirm(mutation.data.id)
                 } catch (e) {
                     console.warn(e)
                 }

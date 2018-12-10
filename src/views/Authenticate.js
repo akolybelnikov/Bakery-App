@@ -40,7 +40,8 @@ class Authenticate extends PureComponent {
         username: null,
         id: null,
         modalIsActive: false,
-        message: null
+        message: null,
+        hasCode: false
     }
 
     handleSignIn = async event => {
@@ -139,6 +140,7 @@ class Authenticate extends PureComponent {
                                                 </Field>
                                                 <Confirm
                                                     id={this.state.id}
+                                                    hasCode={this.state.hasCode}
                                                     success={this.onSuccessfulCodeConfirmation}
                                                     onModalOpen={this.onModalOpen}/>
                                             </Fragment>
