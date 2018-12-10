@@ -1,10 +1,18 @@
 import gql from 'graphql-tag'
 
 export default gql(`
-    mutation($id: ID!, $email: String!) {
-        updateUser(id: $id, email: $email) {
+    mutation($input: UpdateUserInput!) {
+        updateUser(input: $input) {
             id
             email
+            status,
+            firstname,
+            lastname,
+            telephone,
+            avatar,
+            votes,
+            dob,
+            lastActive
         }
     }
 `)

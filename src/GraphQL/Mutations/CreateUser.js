@@ -5,6 +5,7 @@ export default gql(`
         createUser(input: $input) {
             id
             email
+            status
         }
     }
 `)

@@ -8,52 +8,53 @@ import StyledContainer from '../components/UI/StyledContainer'
 import StyledColumns from '../components/UI/StyledColumns'
 import StyledColumn from '../components/UI/StyledColumn'
 
-export default props => {
+export default ({username, history, userHasAuthenticated, setUsername}) => {
 
     const handleSignOut = async() => {
         try {
             await Auth.signOut()
-            props
-                .history
-                .push("/")
+            history.push("/")
             await Auth.signIn(
                 process.env.REACT_APP_DEFAULT_USER_EMAIL, process.env.REACT_APP_DEFAULT_USER_PASSWORD
             )
-            props.setUsername(null)
+            setUsername(null)
         } catch (e) {
             console.error(e)
         }
-        props.userHasAuthenticated(false)
+        userHasAuthenticated(false)
     }
 
     return (
-        <StyledContainer>
+        <StyledContainer height="70vh">
             <StyledColumns>
                 <StyledColumn>
-                    <Button isFullWidth isColor="primary" isOutlined onClick={handleSignOut}>Выйдти</Button>
+                <User id={username} />
+                <Button isFullWidth isColor="primary" isOutlined onClick={handleSignOut}>Выйдти</Button>
                 </StyledColumn>
             </StyledColumns>
         </StyledContainer>
     )
 }
 
-const User = ({email}) => {
+const User = ({id}) => {
     return (
         <Query
             query={GET_USER}
             fetchPolicy="cache-first"
             errorPolicy="all"
             variables={{
-            email
+            id
         }}>
             {({loading, error, data}) => {
                 if (loading) 
                     return (<Icon className="fas fa-spinner fa-pulse" isSize="large"/>)
-                if (error) 
-                    return console.error(error)
+                if (error) {
+                    console.error(error)
+                    return null
+                }
                 if (data) {
                     return (
-                        <span>{data.getUser.avatar}</span>
+                        <span>{data.getUser.id}</span>
                     )
                 }
             }}
